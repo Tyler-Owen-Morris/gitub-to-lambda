@@ -1,0 +1,6 @@
+boxsdk==3.3.0
+boxsdk[jwt]==3.3.0
+pandas==1.2.1
+requests==2.7.0
+pymysql==1.0.2
+boto3==1.22.6
