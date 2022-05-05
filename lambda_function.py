@@ -27,13 +27,13 @@ connection = pymysql.connect(
 )
 
 # box sdk INIT
-""" auth = OAuth2(
+auth = OAuth2(
     client_id = os.environ['BOX_CLIENT_ID'],
     client_secret = os.environ['BOX_CLIENT_SECRET'],
     access_token = os.environ['BOX_DEV_TOKEN'],
-) """
+)
 
-auth_settings = {
+""" auth_settings = {
     "boxAppSettings": {
         "clientID": os.environ['BOX_CLIENT_ID'],
         "clientSecret": os.environ['BOX_CLIENT_SECRET'],
@@ -46,7 +46,7 @@ auth_settings = {
     "enterpriseID": os.environ['BOX_ENTERPRISE_ID']
 }
 
-auth = JWTAuth.from_settings_dictionary(auth_settings)
+auth = JWTAuth.from_settings_dictionary(auth_settings) """
 
 client = Client(auth)
 
