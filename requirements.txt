@@ -1,6 +1,5 @@
 boxsdk
 boxsdk[jwt]
-pandas
 requests
 pymysql
 boto3
