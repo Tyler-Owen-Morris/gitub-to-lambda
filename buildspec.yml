@@ -1,4 +1,5 @@
 version: 0.2
+instance_class: F4_HIGHMEM
 phases:
   install:
     runtime-versions:
