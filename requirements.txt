@@ -1,5 +1,3 @@
 boxsdk
 boxsdk[jwt]
-requests
 pymysql
-boto3
