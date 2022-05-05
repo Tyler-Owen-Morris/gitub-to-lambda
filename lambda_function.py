@@ -69,12 +69,12 @@ def lambda_handler(event, context):
     print(df.head())
     print(df.columns)
     sites = df['SiteID'].unique()
-    #for site in sites:
-        #sav_df = df.loc[df['SiteID'] == site]
-        #print(sav_df.head())
+    for site in sites:
+        sav_df = df.loc[df['SiteID'] == site]
+        print(sav_df.head())
         ## Write to services section 
         #write_to_S3(site,sav_df)
-        #write_to_box(site,sav_df)
+        write_to_box(site,sav_df)
     message = {"message": "Execution started successfully!"}
     return {
         "statusCode": 200,
