@@ -27,26 +27,26 @@ connection = pymysql.connect(
 )
 
 # box sdk INIT
-auth = OAuth2(
+""" auth = OAuth2(
     client_id = os.environ['BOX_CLIENT_ID'],
     client_secret = os.environ['BOX_CLIENT_SECRET'],
     access_token = os.environ['BOX_DEV_TOKEN'],
-)
+) """
 
-# auth_settings = {
-#   "boxAppSettings": {
-#     "clientID": os.environ['BOX_JWT_CLIENT_ID'],
-#     "clientSecret": os.environ['BOX_JWT_CLIENT_SECRET'],
-#     "appAuth": {
-#       "publicKeyID": os.environ['BOX_JWT_AUTH_PUBLIC_KEY'],
-#       "privateKey": os.environ['BOX_JWT_AUTH_PRIVATE_KEY'],
-#       "passphrase": os.environ['BOX_JWT_AUTH_PASSPHRASE']
-#     }
-#   },
-#   "enterpriseID": os.environ['BOX_ENTERPRISE_ID']
-# }
+auth_settings = {
+    "boxAppSettings": {
+        "clientID": os.environ['BOX_CLIENT_ID'],
+        "clientSecret": os.environ['BOX_CLIENT_SECRET'],
+        "appAuth": {
+        "publicKeyID": os.environ['BOX_JWT_AUTH_PUBLIC_KEY'],
+        "privateKey": os.environ['BOX_JWT_AUTH_PRIVATE_KEY'],
+        "passphrase": os.environ['BOX_JWT_AUTH_PASSPHRASE']
+        }
+    },
+    "enterpriseID": os.environ['BOX_ENTERPRISE_ID']
+}
 
-# auth = JWTAuth.from_settings_dictionary(auth_settings)
+auth = JWTAuth.from_settings_dictionary(auth_settings)
 
 client = Client(auth)
 
@@ -69,12 +69,12 @@ def lambda_handler(event, context):
     print(df.head())
     print(df.columns)
     sites = df['SiteID'].unique()
-    for site in sites:
-        sav_df = df.loc[df['SiteID'] == site]
-        print(sav_df.head())
+    #for site in sites:
+        #sav_df = df.loc[df['SiteID'] == site]
+        #print(sav_df.head())
         ## Write to services section 
         #write_to_S3(site,sav_df)
-        write_to_box(site,sav_df)
+        #write_to_box(site,sav_df)
     message = {"message": "Execution started successfully!"}
     return {
         "statusCode": 200,
