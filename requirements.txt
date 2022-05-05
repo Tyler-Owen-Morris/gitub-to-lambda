@@ -2,3 +2,5 @@ boxsdk
 boxsdk[jwt]
 pymysql
 requests_toolbelt
+jwt
+cryptography
