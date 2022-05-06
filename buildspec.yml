@@ -11,7 +11,7 @@ phases:
     commands:
       - echo "Zipping deployment package..."
       - cd lib
-      - pip install --target 'boxsdk/auth/' cryptography
+      - pip install --target './boxsdk/auth/' cryptography
       - zip -r9 ../deployment_package.zip .
       - cd ..
       - zip -g deployment_package.zip lambda_function.py
