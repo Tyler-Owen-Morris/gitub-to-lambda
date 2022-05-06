@@ -59,6 +59,7 @@ print(f'The current user ID is {user.id}')
 def lambda_handler(event, context):
     
     print("i'm alive!")
+    print("JWTAuth object:",JWTAuth)
     print(connection)
     cursor = connection.cursor(pymysql.cursors.DictCursor)
     query = "SELECT * FROM `"+database_name+"`."+survey_tbl
