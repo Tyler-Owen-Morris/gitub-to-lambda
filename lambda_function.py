@@ -212,7 +212,7 @@ def update_box_pdf(fileid,file_path):
 
 def write_pdf_to_box(folderid, file_name,file_path):
     # Prepare example
-    with smart_open(file_path, "rb") as fh:
+    with smart_open('s3://'+bucket+'/'+file_name, "rb") as fh:
         bytes_stream = BytesIO(fh.read())
     # Read from bytes_stream
     reader = PdfFileReader(bytes_stream)
