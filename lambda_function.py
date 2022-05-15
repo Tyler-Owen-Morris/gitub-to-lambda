@@ -43,12 +43,15 @@ def lambda_handler(event, context):
     for fil in f_list:
         my_file = fil.key.split(".")
         print("my file:",my_file)
-        try:
-            my_bucket.download_file(fil.key,'/tmp/'+fil.key)
-            saved_files.append(('/tmp/'+fil.key,fil.key))
-        except ValueError as ve:
-            print("ERROR:",ve)
-            print("download failed for:",fil)
+        if my_file[1] == 'pdf':
+            try:
+                my_bucket.download_file(fil.key,'/tmp/'+fil.key)
+                saved_files.append(('/tmp/'+fil.key,fil.key))
+            except ValueError as ve:
+                print("ERROR:",ve)
+                print("download failed for:",fil)
+        else:
+            print("passing on non-pdf file")
     print("saved files:",saved_files)
     s_keys = [x[1] for x in saved_files]
     file_names = [x[0] for x in myfiles]
