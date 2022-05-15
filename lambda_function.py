@@ -46,7 +46,8 @@ def lambda_handler(event, context):
         try:
             my_bucket.download_file(fil,'/tmp/'+fil)
             saved_files.append('/tmp/'+fil)
-        except:
+        except botocore.exceptions.ClientError as e:
+            print("ERROR:",e.response['Error'])
             print("download failed for:",fil)
     print("saved files:",saved_files)
     message = {"message": "Execution started successfully!"}
