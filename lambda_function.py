@@ -73,7 +73,7 @@ def lambda_handler(event, context):
             if f_key.split(".")[0] in fold_names:
                 fid = '0'
                 for folder in myfolders:
-                    if folder[0] == f_key:
+                    if folder[0] == f_key.split(".")[0]:
                         fid = folder[1]
                 print("write new file to box:",fid,f_key,f_path)
                 write_pdf_to_box(fid, f_key,f_path)
