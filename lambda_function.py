@@ -44,8 +44,8 @@ def lambda_handler(event, context):
         my_file = fil.key.split(".")
         print("my file:",my_file)
         try:
-            s3_client.download_file(bucket,fil,'./tmp/'+fil)
-            saved_files.append('./tmp/'+fil)
+            my_bucket.download_file(fil,'/tmp/'+fil)
+            saved_files.append('/tmp/'+fil)
         except:
             print("download failed for:",fil)
     print("saved files:",saved_files)
