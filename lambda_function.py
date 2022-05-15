@@ -126,5 +126,3 @@ def updateFile(fileid,file_name,data):
     updated_file = client.file(fileid).update_contents_with_stream(stream)
     print(f'File "{updated_file.name}" has been updated')
     return updated_file
-
-lambda_handler()
