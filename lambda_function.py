@@ -204,12 +204,6 @@ def updateFile(fileid,file_name,data):
 def update_box_pdf(fileid,file_path):
     with open(file_path, "rb") as fh:
         bytes_stream = BytesIO(fh.read())
-    # Read from bytes_stream
-    reader = PdfFileReader(bytes_stream)
-    # Write to bytes_stream
-    writer = PdfFileWriter()
-    with BytesIO() as bytes_stream:
-        writer.write(bytes_stream)
     updated_file = client.file(fileid).update_contents_with_stream(bytes_stream)
     print(f'File "{updated_file.name}" has been updated')
     return updated_file
