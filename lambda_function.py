@@ -4,7 +4,7 @@ from random import randint
 import os
 import csv
 import pandas as pd
-from io import StringIO
+from io import StringIO, BytesIO
 import requests
 import boto3
 from boxsdk import OAuth2, Client
@@ -53,9 +53,24 @@ def lambda_handler(event, context):
     print("saved files:",saved_files)
     s_keys = [x[1] for x in saved_files]
     file_names = [x[0] for x in myfiles]
-    for f_key in s_keys:
+    fold_names = [x[0] for x in myfolders]
+    for ms_file in saved_files:
+        f_key = ms_file[1]
+        f_path = ms_file[0]
         if f_key in file_names:
-
+            ufid = None
+            for mfile in myfiles:
+                if mfile[0]==f_key:
+                    ufid = mfile[1]
+            if ufid != None:
+                update_box_pdf(ufid,f_path)
+        else:
+            if f_key in fold_names:
+                fid = '0'
+                for folder in myfolders:
+                    if folder[0] == f_key:
+                        fid = folder[1]
+                write_pdf_to_box(fid, f_key,f_path)
 
     message = {"message": "Execution started successfully!"}
     return {
@@ -163,7 +178,6 @@ def createFolder(new_folder_name, parent_folder = client.folder('0'), ):
 def createFile(folderid, file_name,data):
     stream = StringIO()
     # data.to_csv(stream)
-
     fname = file_name
     box_file = client.folder(folderid).upload_stream(stream, fname)
 
@@ -173,3 +187,30 @@ def updateFile(fileid,file_name,data):
     updated_file = client.file(fileid).update_contents_with_stream(stream)
     print(f'File "{updated_file.name}" has been updated')
     return updated_file
+
+def update_box_pdf(fileid,file_path):
+    with open(file_path, "rb") as fh:
+        bytes_stream = BytesIO(fh.read())
+    # Read from bytes_stream
+    reader = PdfFileReader(bytes_stream)
+    # Write to bytes_stream
+    writer = PdfFileWriter()
+    with BytesIO() as bytes_stream:
+        writer.write(bytes_stream)
+    updated_file = client.file(fileid).update_contents_with_stream(bytes_stream)
+    print(f'File "{updated_file.name}" has been updated')
+    return updated_file
+
+def write_pdf_to_box(folderid, file_name,file_path):
+    # Prepare example
+    with open(file_path, "rb") as fh:
+        bytes_stream = BytesIO(fh.read())
+    # Read from bytes_stream
+    reader = PdfFileReader(bytes_stream)
+    # Write to bytes_stream
+    writer = PdfFileWriter()
+    with BytesIO() as bytes_stream:
+        writer.write(bytes_stream)
+    #write stream to box
+    box_file = client.folder(folderid).upload_stream(bytes_stream,file_name)
+    print("created new file in box:",box_file)
