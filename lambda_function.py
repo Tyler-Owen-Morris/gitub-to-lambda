@@ -80,7 +80,8 @@ def lambda_handler(event, context):
                     if folder[0] == f_key.split(".")[0]:
                         fid = folder[1]
                 print("write new file to box:",fid,f_key,f_path)
-                write_pdf_to_box(fid, f_key,f_path)
+                #write_pdf_to_box(fid, f_key,f_path)
+                write_bin_to_box(fid,f_key,f_path)
             else:
                 print("No matching folder or file found for:",ms_file)
 
@@ -225,3 +226,11 @@ def write_pdf_to_box(folderid, file_name,file_path):
     stream.seek(0)
     box_file = client.folder(folderid).upload_stream(stream,file_name.split(".")[0]+".txt")
     print("created new file in box:",box_file)
+
+def write_bin_to_box(folderid,file_name,file_path):
+    with open(file_path, "rb") as fh:
+        bytes_stream = BytesIO(fh.read())
+        reader = PdfFileReader(bytes_stream)
+        writer = PdfFileWriter()
+        with BytesIO() as bytes_stream:
+            writer.write(bytes_stream)
