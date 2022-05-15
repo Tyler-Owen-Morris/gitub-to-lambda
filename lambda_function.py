@@ -14,6 +14,7 @@ bucket = 'empact-test'
 
 # S3 INIT
 s3 = boto3.resource('s3')
+s3_client = boto3.client('s3')
 my_bucket = s3.Bucket(bucket)
 
 
@@ -36,9 +37,15 @@ print(f'The current user ID is {user.id}')
 def lambda_handler(event, context):
     
     print("i'm alive!")
-    
-    for buck in my_bucket.objects.all():
-        print(buck.key)
+    myfiles,myfolders = getAllEntities() #2 lists of tuples (file name, file box id)
+    f_list = read_from_s3() #string list of file names
+    for fil in f_list:
+        my_file = fil.split(".")
+        print("my file:",my_file)
+        try:
+            s3_client.download_file(bucket,fil,'./tmp/'+fil)
+        except:
+            print("download failed for:",fil)
 
     message = {"message": "Execution started successfully!"}
     return {
@@ -48,6 +55,35 @@ def lambda_handler(event, context):
     }
 
 ## UTILITY FUNCTIONS
+def read_from_s3():
+    ret = []
+    for buck in my_bucket.objects.all():
+        print(buck)
+        ret.append(buck)
+    return ret
+
+def getAllEntities():
+    files = []
+    folders = []
+    items = client.folder('0').get_items(limit=1000)
+    for item in items:
+        #print("Item type:",item.type)
+        if item.type == 'file':
+            files.append((item.name,item.id))
+        elif item.type == 'folder':
+            folders.append((item.name,item.id))
+    for fold in folders:
+        items = client.folder(fold[1]).get_items(limit=1000)
+        for item in items:
+            #print("Item type:",item.type)
+            if item.type == 'file':
+                files.append((item.name,item.id))
+            elif item.type == 'folder':
+                #not currently supporting subfolders
+                pass
+                #folders.append((item.name,item.id))
+    return files,folders
+
 def write_to_box(fname,df):
     folders = getAllFolders()
     fold_names = [x[0] for x in folders]
