@@ -56,6 +56,7 @@ def lambda_handler(event, context):
     s_keys = [x[1] for x in saved_files]
     file_names = [x[0] for x in myfiles]
     fold_names = [x[0] for x in myfolders]
+    print("box file names:",file_names)
     for ms_file in saved_files:
         f_key = ms_file[1]
         f_path = ms_file[0]
@@ -76,6 +77,8 @@ def lambda_handler(event, context):
                         fid = folder[1]
                 print("write new file to box:",fid,f_key,f_path)
                 write_pdf_to_box(fid, f_key,f_path)
+            else:
+                print("No matching folder or file found for:",ms_file)
 
     message = {"message": "Execution started successfully!"}
     return {
