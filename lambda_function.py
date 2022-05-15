@@ -18,8 +18,6 @@ s3 = boto3.resource('s3')
 s3_client = boto3.client('s3')
 my_bucket = s3.Bucket(bucket)
 
-
-
 # box sdk INIT
 auth = OAuth2(
     client_id = os.environ['BOX_CLIENT_ID'],
