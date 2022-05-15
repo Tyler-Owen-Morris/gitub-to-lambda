@@ -46,7 +46,8 @@ def lambda_handler(event, context):
         #print("my file:",my_file)
         if my_file[1] == 'pdf':
             try:
-                my_bucket.download_file(fil.key,'/tmp/'+fil.key)
+                resp = my_bucket.download_file(fil.key,'/tmp/'+fil.key)
+                print("download response:?",resp)
                 saved_files.append(('/tmp/'+fil.key,fil.key))
             except ValueError as ve:
                 print("ERROR:",ve)
@@ -212,7 +213,7 @@ def update_box_pdf(fileid,file_path):
 
 def write_pdf_to_box(folderid, file_name,file_path):
     # Prepare example
-    with smart_open('s3://'+bucket+'/'+file_name, "rb") as fh:
+    with open(file_path, "rb") as fh:
         bytes_stream = BytesIO(fh.read())
     # Read from bytes_stream
     reader = PdfFileReader(bytes_stream)
