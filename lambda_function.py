@@ -13,7 +13,7 @@ from boxsdk import OAuth2, Client
 bucket = 'empact-test'
 
 # S3 INIT
-s3 = boto3.resourse('s3')
+s3 = boto3.resource('s3')
 my_bucket = s3.Bucket(bucket)
 
 
