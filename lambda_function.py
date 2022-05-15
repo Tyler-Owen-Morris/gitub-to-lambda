@@ -54,6 +54,8 @@ def lambda_handler(event, context):
                 print("download failed for:",fil)
         else:
             print("passing on non-pdf file")
+    li = os.listdir("/tmp/")
+    print("temp files created:",li)
     print("saved files:",saved_files)
     s_keys = [x[1] for x in saved_files]
     file_names = [x[0] for x in myfiles]
