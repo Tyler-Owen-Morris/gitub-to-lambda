@@ -10,6 +10,7 @@ import boto3
 from boxsdk import OAuth2, Client
 import PyPDF2
 from PyPDF2 import PdfFileReader,PdfFileWriter
+from smart_open import smart_open
 
 ## **** CONFIGURATION VARIABLES **** ##
 bucket = 'empact-test'
@@ -42,7 +43,7 @@ def lambda_handler(event, context):
     saved_files = []
     for fil in f_list:
         my_file = fil.key.split(".")
-        print("my file:",my_file)
+        #print("my file:",my_file)
         if my_file[1] == 'pdf':
             try:
                 my_bucket.download_file(fil.key,'/tmp/'+fil.key)
@@ -211,7 +212,7 @@ def update_box_pdf(fileid,file_path):
 
 def write_pdf_to_box(folderid, file_name,file_path):
     # Prepare example
-    with open(file_path, "w+b") as fh:
+    with smart_open(file_path, "rb") as fh:
         bytes_stream = BytesIO(fh.read())
     # Read from bytes_stream
     reader = PdfFileReader(bytes_stream)

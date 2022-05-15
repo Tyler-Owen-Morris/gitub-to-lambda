@@ -6,3 +6,4 @@ jwt
 cryptography
 requests
 pyPdf2
+smart_open
