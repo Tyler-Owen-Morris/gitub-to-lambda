@@ -70,7 +70,7 @@ def lambda_handler(event, context):
                 print("update file:",ufid,f_path)
                 update_box_pdf(ufid,f_path)
         else:
-            if f_key in fold_names:
+            if f_key.split(".")[0] in fold_names:
                 fid = '0'
                 for folder in myfolders:
                     if folder[0] == f_key:
