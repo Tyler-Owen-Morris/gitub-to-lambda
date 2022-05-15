@@ -59,12 +59,14 @@ def lambda_handler(event, context):
     for ms_file in saved_files:
         f_key = ms_file[1]
         f_path = ms_file[0]
+        print("file processing...",ms_file)
         if f_key in file_names:
             ufid = None
             for mfile in myfiles:
                 if mfile[0]==f_key:
                     ufid = mfile[1]
             if ufid != None:
+                print("update file:",ufid,f_path)
                 update_box_pdf(ufid,f_path)
         else:
             if f_key in fold_names:
@@ -72,6 +74,7 @@ def lambda_handler(event, context):
                 for folder in myfolders:
                     if folder[0] == f_key:
                         fid = folder[1]
+                print("write new file to box:",fid,f_key,f_path)
                 write_pdf_to_box(fid, f_key,f_path)
 
     message = {"message": "Execution started successfully!"}
