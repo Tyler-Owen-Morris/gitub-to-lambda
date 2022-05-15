@@ -211,8 +211,8 @@ def update_box_pdf(fileid,file_path):
 
 def write_pdf_to_box(folderid, file_name,file_path):
     # Prepare example
-    fh = open(file_path, "w+") 
-    bytes_stream = BytesIO(fh.read())
+    with open(file_path, "w+") as fh:
+        bytes_stream = BytesIO(fh.read())
     # Read from bytes_stream
     reader = PdfFileReader(bytes_stream)
     # Write to bytes_stream
