@@ -39,14 +39,16 @@ def lambda_handler(event, context):
     print("i'm alive!")
     myfiles,myfolders = getAllEntities() #2 lists of tuples (file name, file box id)
     f_list = read_from_s3() #string list of file names
+    saved_files = []
     for fil in f_list:
         my_file = fil.key.split(".")
         print("my file:",my_file)
         try:
             s3_client.download_file(bucket,fil,'./tmp/'+fil)
+            saved_files.append('./tmp/'+fil)
         except:
             print("download failed for:",fil)
-
+    print("saved files:",saved_files)
     message = {"message": "Execution started successfully!"}
     return {
         "statusCode": 200,
