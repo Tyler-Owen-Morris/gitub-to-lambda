@@ -8,6 +8,7 @@ from io import StringIO
 import requests
 import boto3
 from boxsdk import OAuth2, Client
+import pyPdf2
 
 ## **** CONFIGURATION VARIABLES **** ##
 bucket = 'empact-test'
@@ -38,18 +39,24 @@ def lambda_handler(event, context):
     
     print("i'm alive!")
     myfiles,myfolders = getAllEntities() #2 lists of tuples (file name, file box id)
-    f_list = read_from_s3() #string list of file names
+    f_list = read_from_s3() #string list of file objects from S3 .key is file name, .bucket is location
     saved_files = []
     for fil in f_list:
         my_file = fil.key.split(".")
         print("my file:",my_file)
         try:
             my_bucket.download_file(fil.key,'/tmp/'+fil.key)
-            saved_files.append('/tmp/'+fil.key)
+            saved_files.append(('/tmp/'+fil.key,fil.key))
         except ValueError as ve:
             print("ERROR:",ve)
             print("download failed for:",fil)
     print("saved files:",saved_files)
+    s_keys = [x[1] for x in saved_files]
+    file_names = [x[0] for x in myfiles]
+    for f_key in s_keys:
+        if f_key in file_names:
+
+
     message = {"message": "Execution started successfully!"}
     return {
         "statusCode": 200,
@@ -155,8 +162,9 @@ def createFolder(new_folder_name, parent_folder = client.folder('0'), ):
 
 def createFile(folderid, file_name,data):
     stream = StringIO()
-    data.to_csv(stream)
-    fname = file_name+".csv"
+    # data.to_csv(stream)
+
+    fname = file_name
     box_file = client.folder(folderid).upload_stream(stream, fname)
 
 def updateFile(fileid,file_name,data):
