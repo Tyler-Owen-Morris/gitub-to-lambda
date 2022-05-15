@@ -214,7 +214,7 @@ def update_box_pdf(fileid,file_path):
     return updated_file
 
 def write_pdf_to_box(folderid, file_name,file_path):
-    stream = StringIO
+    stream = StringIO()
     pdfFileObj = open(file_path,'rb')
     pdfReader = PdfFileReader(pdfFileObj)
     for i in range(0,pdfReader.numPages):
@@ -222,5 +222,6 @@ def write_pdf_to_box(folderid, file_name,file_path):
         extr_txt = pageObj.extractText()
         print("extrTxt",extr_txt)
         stream.write("hello world!")
+    stream.seek(0)
     box_file = client.folder(folderid).upload_stream(stream,file_name.split(".")[0]+".txt")
     print("created new file in box:",box_file)
