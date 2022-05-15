@@ -230,7 +230,6 @@ def write_pdf_to_box(folderid, file_name,file_path):
 def write_bin_to_box(folderid,file_name,file_path):
     with open(file_path, "rb") as fh:
         bytes_stream = BytesIO(fh.read())
-        reader = PdfFileReader(bytes_stream)
-        writer = PdfFileWriter()
-        with BytesIO() as bytes_stream:
-            writer.write(bytes_stream)
+        box_file = client.folder(folderid).upload_stream(bytes_stream,file_name)
+        print("bytes stream",bytes_stream)
+        print("boxfile:",box_file)
