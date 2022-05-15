@@ -214,15 +214,11 @@ def update_box_pdf(fileid,file_path):
     return updated_file
 
 def write_pdf_to_box(folderid, file_name,file_path):
-    # Prepare example
-    with open(file_path, "rb") as fh:
-        bytes_stream = BytesIO(fh.read())
-    # Read from bytes_stream
-    reader = PdfFileReader(bytes_stream)
-    # Write to bytes_stream
-    writer = PdfFileWriter()
-    with BytesIO() as bytes_stream:
-        writer.write(bytes_stream)
-    #write stream to box
-    box_file = client.folder(folderid).upload_stream(bytes_stream,file_name)
+    stream = StringIO
+    pdfFileObj = open(file_path,'rb')
+    pdfReader = PdfFileReader(pdfFileObj)
+    for i in range(0,pdfReader.numPages):
+        pageObj = pdfReader.getPage(i)
+        stream.write(pageObj.extractText())
+    box_file = client.folder(folderid).upload_stream(stream,file_name.split(".")[0]+".txt")
     print("created new file in box:",box_file)
