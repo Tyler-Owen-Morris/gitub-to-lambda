@@ -8,7 +8,8 @@ from io import StringIO, BytesIO
 import requests
 import boto3
 from boxsdk import OAuth2, Client
-import pyPdf2
+import PyPDF2
+from PyPDF2 import PdfFileReader,PdfFileWriter
 
 ## **** CONFIGURATION VARIABLES **** ##
 bucket = 'empact-test'
