@@ -4,3 +4,6 @@ pymysql
 requests_toolbelt
 jwt
 cryptography
+pandas
+requests
+boto3
