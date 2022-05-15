@@ -40,7 +40,7 @@ def lambda_handler(event, context):
     myfiles,myfolders = getAllEntities() #2 lists of tuples (file name, file box id)
     f_list = read_from_s3() #string list of file names
     for fil in f_list:
-        my_file = fil.split(".")
+        my_file = fil.key.split(".")
         print("my file:",my_file)
         try:
             s3_client.download_file(bucket,fil,'./tmp/'+fil)
