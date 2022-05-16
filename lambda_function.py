@@ -49,6 +49,7 @@ def lambda_handler(event, context):
                 resp = my_bucket.download_file(fil.key,'/tmp/'+fil.key)
                 print("download response:?",resp)
                 saved_files.append(('/tmp/'+fil.key,fil.key))
+                s3.Object(bucket,fil.key).delete()
             except ValueError as ve:
                 print("ERROR:",ve)
                 print("download failed for:",fil)
@@ -204,8 +205,8 @@ def updateFile(fileid,file_name,data):
 def update_box_pdf(fileid,file_path):
     with open(file_path, "rb") as fh:
         bytes_stream = BytesIO(fh.read())
-    updated_file = client.file(fileid).update_contents_with_stream(bytes_stream)
-    print(f'File "{updated_file.name}" has been updated')
+        updated_file = client.file(fileid).update_contents_with_stream(bytes_stream)
+        print(f'File "{updated_file.name}" has been updated')
     return updated_file
 
 def write_pdf_to_box(folderid, file_name,file_path):
