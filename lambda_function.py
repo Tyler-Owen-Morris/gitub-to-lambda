@@ -73,6 +73,7 @@ def lambda_handler(event, context):
             if ufid != None:
                 print("update file:",ufid,f_path)
                 update_box_pdf(ufid,f_path)
+                s3.Object(bucket,f_key).delete()
         else:
             if f_key.split(".")[0] in fold_names:
                 fid = '0'
@@ -82,6 +83,7 @@ def lambda_handler(event, context):
                 print("write new file to box:",fid,f_key,f_path)
                 #write_pdf_to_box(fid, f_key,f_path)
                 write_pdf_to_box(fid,f_key,f_path)
+                s3.Object(bucket,f_key).delete()
             else:
                 print("No matching folder or file found for:",ms_file)
 
